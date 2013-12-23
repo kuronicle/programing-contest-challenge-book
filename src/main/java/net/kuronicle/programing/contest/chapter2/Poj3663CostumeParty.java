@@ -27,18 +27,18 @@ import java.util.Scanner;
  * </ul>
  * 
  * <h2>Sample Input</h2>
- * <p>
- * 4 6<br />
- * 3<br />
- * 5<br />
- * 2<br />
- * 1<br />
- * </p>
+ * <pre>
+ * 4 6
+ * 3
+ * 5
+ * 2
+ * 1
+ * </pre>
  * 
  * <h2>Sample Output</h2>
- * <p>
+ * <pre>
  * 4
- * </p>
+ * </pre>
  * 
  */
 public class Poj3663CostumeParty {
@@ -53,9 +53,14 @@ public class Poj3663CostumeParty {
             Scanner inForL = new Scanner(System.in);
             l[i] = inForL.nextInt();
         }
+        
+        int answer = solve(n, s, l);
 
-        int countOfPairs = countPaires(s, l);
-        System.out.println(countOfPairs);
+        System.out.println(answer);
+    }
+
+    public static int solve(int n, int s, int[] l) {
+        return countPaires(s, l);
     }
 
     private static int countPaires(int s, int[] l) {
