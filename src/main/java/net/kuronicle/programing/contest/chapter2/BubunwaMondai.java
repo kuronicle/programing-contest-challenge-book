@@ -2,6 +2,10 @@ package net.kuronicle.programing.contest.chapter2;
 
 import java.util.Arrays;
 
+/**
+ * p.34 部分和問題
+ *
+ */
 public class BubunwaMondai {
 
     public static boolean solve(int n, int[] a, int k) {

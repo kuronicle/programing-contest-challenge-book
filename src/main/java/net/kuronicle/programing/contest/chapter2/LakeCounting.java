@@ -1,5 +1,9 @@
 package net.kuronicle.programing.contest.chapter2;
 
+/**
+ * p.35 Lake Counting (POJ No.2386)
+ *
+ */
 public class LakeCounting {
 
     String[][] garden;
