@@ -1,4 +1,4 @@
-package net.kuronicle.programing.contest.chapter2;
+package programing.contest.chapter2;
 
 import java.util.Scanner;
 
@@ -52,7 +52,7 @@ import java.util.Scanner;
  * </pre>
  * 
  */
-public class Poj2393YogurtFactory {
+public class Poj2393YogurtFactoryKuronicle {
     
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
@@ -62,29 +62,28 @@ public class Poj2393YogurtFactory {
         int[] c = new int[n];
         int[] y = new int[n];
         for (int i = 0; i < n; i++) {
-            Scanner inForCY = new Scanner(System.in);
-            c[i] = inForCY.nextInt();
-            y[i] = inForCY.nextInt();
+            c[i] = in.nextInt();
+            y[i] = in.nextInt();
         }
         
-        int answer = solve(n, s, c, y);
+        long answer = solve(n, s, c, y);
         
         System.out.println(answer);
     }
 
-    public static int solve(int n, int s, int[] c, int[] y) {
-        int totalCost = 0;
+    public static long solve(int n, int s, int[] c, int[] y) {
+        long totalCost = 0;
         
         for(int i = 0; i < n; i++) {
-            int costOfWeekI = calcMinimumCostOfWeek(i, s, c, y);
+            long costOfWeekI = calcMinimumCostOfWeek(i, s, c, y);
             totalCost += costOfWeekI;
         }
         
         return totalCost;
     }
 
-    private static int calcMinimumCostOfWeek(int i, int s, int[] c, int[] y) {
-        int minCost = Integer.MAX_VALUE;
+    private static long calcMinimumCostOfWeek(int i, int s, int[] c, int[] y) {
+        long minCost = Integer.MAX_VALUE;
         
         for (int j = 0; j <= i; j++) {
             int costOfMadeInWeekJ = y[i] * (c[j] + s * (i-j));

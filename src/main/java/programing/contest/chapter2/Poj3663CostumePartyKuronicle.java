@@ -1,4 +1,4 @@
-package net.kuronicle.programing.contest.chapter2;
+package programing.contest.chapter2;
 
 import java.util.Scanner;
 
@@ -41,7 +41,7 @@ import java.util.Scanner;
  * </pre>
  * 
  */
-public class Poj3663CostumeParty {
+public class Poj3663CostumePartyKuronicle {
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
@@ -50,8 +50,7 @@ public class Poj3663CostumeParty {
 
         int[] l = new int[n];
         for (int i = 0; i < n; i++) {
-            Scanner inForL = new Scanner(System.in);
-            l[i] = inForL.nextInt();
+            l[i] = in.nextInt();
         }
         
         int answer = solve(n, s, l);
