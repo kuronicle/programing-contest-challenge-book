@@ -53,6 +53,7 @@ import java.util.Scanner;
  * 
  * <h2>Result</h2>
  * <ul>
+ * <li>Result: Accepted</li>
  * <li>Memory: 5352KB</li>
  * <li>Time: 2829ms</li>
  * </ul>
