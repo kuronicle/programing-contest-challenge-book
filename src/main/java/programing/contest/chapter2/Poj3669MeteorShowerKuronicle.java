@@ -102,10 +102,6 @@ public class Poj3669MeteorShowerKuronicle {
             return this.y;
         }
         
-        public int getMeteorFallTime() {
-            return this.meteorFallTime;
-        }
-
         public int getArrivedTime() {
             return this.arrivedTime;
         }
