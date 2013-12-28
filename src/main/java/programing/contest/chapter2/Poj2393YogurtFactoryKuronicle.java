@@ -51,6 +51,12 @@ import java.util.Scanner;
  * 126900
  * </pre>
  * 
+ * <h2>Result</h2>
+ * <ul>
+ * <li>Memory: 5352KB</li>
+ * <li>Time: 2829ms</li>
+ * </ul>
+ * 
  */
 public class Poj2393YogurtFactoryKuronicle {
     
@@ -83,13 +89,13 @@ public class Poj2393YogurtFactoryKuronicle {
     }
 
     private static long calcMinimumCostOfWeek(int i, int s, int[] c, int[] y) {
-        long minCost = Integer.MAX_VALUE;
+        long minCostPerY = Integer.MAX_VALUE;
         
-        for (int j = 0; j <= i; j++) {
-            int costOfMadeInWeekJ = y[i] * (c[j] + s * (i-j));
-            if(minCost > costOfMadeInWeekJ) minCost = costOfMadeInWeekJ;
+        for (int j = i; j >= 0; j--) {
+            int costOfMadeInWeekJ = c[j] + s * (i-j);
+            if(minCostPerY > costOfMadeInWeekJ) minCostPerY = costOfMadeInWeekJ;
         }
         
-        return minCost;
+        return y[i] * minCostPerY;
     }
 }
