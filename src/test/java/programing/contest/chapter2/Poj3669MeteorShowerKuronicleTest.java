@@ -9,15 +9,19 @@ public class Poj3669MeteorShowerKuronicleTest {
 
     @Test
     public void solveTest() {
-        int m = 4;
-        int[] x = {0, 2, 1, 0};
-        int[] y = {0, 1, 1, 3};
-        int[] t = {2, 2, 2, 5};
-        
+        int MAP_X_MAX = 301;
+        int MAP_Y_MAX = 301;
+        int[][] map = new int[MAP_X_MAX][MAP_Y_MAX];
+
+        Poj3669MeteorShowerKuronicle.fallMeteor(map, 0, 0, 2);
+        Poj3669MeteorShowerKuronicle.fallMeteor(map, 2, 1, 2);
+        Poj3669MeteorShowerKuronicle.fallMeteor(map, 1, 1, 2);
+        Poj3669MeteorShowerKuronicle.fallMeteor(map, 0, 3, 5);
+
         int expected = 5;
-        
-        int actual = Poj3669MeteorShowerKuronicle.solve(m, x, y, t);
-        
+
+        int actual = Poj3669MeteorShowerKuronicle.solve(map);
+
         assertThat(actual, is(expected));
     }
 

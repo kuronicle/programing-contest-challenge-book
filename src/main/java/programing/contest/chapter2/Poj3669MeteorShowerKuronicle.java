@@ -70,70 +70,42 @@ import java.util.Scanner;
  */
 public class Poj3669MeteorShowerKuronicle {
 
-    private class Point {
-        private int x;
-        private int y;
-        private int meteorFallTime;
-        private int arrivedTime;
-
-        public Point(int x, int y, int meteorFallTime, int arrivedTime) {
-            this.x = x;
-            this.y = y;
-            this.meteorFallTime = meteorFallTime;
-            this.arrivedTime = arrivedTime;
-        }
-
-        boolean canLocate() {
-            if (isSafePoint()) {
-                return true;
-            }
-            return arrivedTime < meteorFallTime;
-        }
-
-        private boolean isSafePoint() {
-            return meteorFallTime == 0;
-        }
-
-        public int getX() {
-            return this.x;
-        }
-
-        public int getY() {
-            return this.y;
-        }
-        
-        public int getArrivedTime() {
-            return this.arrivedTime;
-        }
-    }
-
     private static final int MAP_X_MAX = 301;
     private static final int MAP_Y_MAX = 301;
     private static final int[][] METEOR_AFFECT_AREA = { { 0, 1, 0, -1 }, { 1, 0, -1, 0 } };
     private static final int[][] MOVE_VECTOR = { { 0, 1, 0, -1 }, { 1, 0, -1, 0 } };
+    
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         int m = in.nextInt();
 
-        int[] x = new int[m];
-        int[] y = new int[m];
-        int[] t = new int[m];
+        int[][] map = new int[MAP_X_MAX][MAP_Y_MAX];
+        
         for (int i = 0; i < m; i++) {
-            x[i] = in.nextInt();
-            y[i] = in.nextInt();
-            t[i] = in.nextInt();
+            int x = in.nextInt();
+            int y = in.nextInt();
+            int t = in.nextInt();
+            fallMeteor(map, x, y, t);
         }
 
-        int answer = solve(m, x, y, t);
+        int answer = solve(map);
 
         System.out.println(answer);
     }
 
-    public static int solve(int m, int[] x, int[] y, int[] t) {
+    public static void fallMeteor(int[][] map, int x, int y, int t) {
+            map[x][y] = t;
+            for (int j = 0; j < METEOR_AFFECT_AREA[0].length; j++) {
+                int affect_x = x + METEOR_AFFECT_AREA[0][j];
+                int affect_y = y + METEOR_AFFECT_AREA[1][j];
+                if (isValidArea(affect_x, affect_y)) {
+                    map[affect_x][affect_y] = t;
+                }
+            }
+    }
 
-        int[][] map = forcastMapAfterMeteosShower(m, x, y, t);
-
+    public static int solve(int[][] map) {
         Queue<Point> queue = new LinkedList<Point>();
         Point startPoint = new Poj3669MeteorShowerKuronicle().new Point(0, 0, map[0][0], 0);
         queue.add(startPoint);
@@ -160,22 +132,44 @@ public class Poj3669MeteorShowerKuronicle {
         return -1;
     }
 
-    private static int[][] forcastMapAfterMeteosShower(int m, int[] x, int[] y, int[] t) {
-        int[][] map = new int[MAP_X_MAX][MAP_Y_MAX];
-        for (int i = 0; i < m; i++) {
-            map[x[i]][y[i]] = t[i];
-            for (int j = 0; j < METEOR_AFFECT_AREA[0].length; j++) {
-                int affect_x = x[i] + METEOR_AFFECT_AREA[0][j];
-                int affect_y = y[i] + METEOR_AFFECT_AREA[1][j];
-                if (isValidArea(affect_x, affect_y)) {
-                    map[affect_x][affect_y] = t[i];
-                }
-            }
-        }
-        return map;
-    }
-
     private static boolean isValidArea(int i, int j) {
         return 0 <= i && i < MAP_X_MAX && 0 <= j && j < MAP_Y_MAX;
+    }
+
+    private class Point {
+        private int x;
+        private int y;
+        private int meteorFallTime;
+        private int arrivedTime;
+    
+        public Point(int x, int y, int meteorFallTime, int arrivedTime) {
+            this.x = x;
+            this.y = y;
+            this.meteorFallTime = meteorFallTime;
+            this.arrivedTime = arrivedTime;
+        }
+    
+        boolean canLocate() {
+            if (isSafePoint()) {
+                return true;
+            }
+            return arrivedTime < meteorFallTime;
+        }
+    
+        private boolean isSafePoint() {
+            return meteorFallTime == 0;
+        }
+    
+        public int getX() {
+            return this.x;
+        }
+    
+        public int getY() {
+            return this.y;
+        }
+        
+        public int getArrivedTime() {
+            return this.arrivedTime;
+        }
     }
 }
