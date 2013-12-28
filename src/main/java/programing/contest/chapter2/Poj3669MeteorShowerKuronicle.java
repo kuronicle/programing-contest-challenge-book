@@ -1,5 +1,7 @@
 package programing.contest.chapter2;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 /**
@@ -32,52 +34,152 @@ import java.util.Scanner;
  * <h2>Input</h2>
  * <ul>
  * <li>Line 1: A single integer: M</li>
- * <li>Lines 2..M+1: Line i+1 contains three
- * space-separated integers: Xi, Yi, and Ti</li>
+ * <li>Lines 2..M+1: Line i+1 contains three space-separated integers: Xi, Yi,
+ * and Ti</li>
  * </ul>
  * 
  * <h2>Output</h2>
  * <ul>
- * <li>Line 1: The minimum time it takes Bessie to get to a safe place or -1 if it
- * is impossible.</li>
+ * <li>Line 1: The minimum time it takes Bessie to get to a safe place or -1 if
+ * it is impossible.</li>
  * </ul>
  * 
  * <h2>Sample Input</h2>
+ * 
  * <pre>
  * 4
  * 0 0 2 
  * 2 1 2 
  * 1 1 2 
- * 0 3 5 
+ * 0 3 5
  * </pre>
  * 
  * <h2>Sample Output</h2>
+ * 
  * <pre>
  * 5
  * </pre>
+ * 
+ * <h2>Result</h2>
+ * <ul>
+ * <li>Result: Memory Limit Exceeded</li>
+ * <li>Memory: -KB</li>
+ * <li>Time: -ms</li>
+ * </ul>
+ * 
  */
 public class Poj3669MeteorShowerKuronicle {
+
+    private class Point {
+        private int x;
+        private int y;
+        private int meteorFallTime;
+        private int arrivedTime;
+
+        public Point(int x, int y, int meteorFallTime, int arrivedTime) {
+            this.x = x;
+            this.y = y;
+            this.meteorFallTime = meteorFallTime;
+            this.arrivedTime = arrivedTime;
+        }
+
+        boolean canLocate() {
+            if (isSafePoint()) {
+                return true;
+            }
+            return arrivedTime < meteorFallTime;
+        }
+
+        private boolean isSafePoint() {
+            return meteorFallTime == 0;
+        }
+
+        public int getX() {
+            return this.x;
+        }
+
+        public int getY() {
+            return this.y;
+        }
+        
+        public int getMeteorFallTime() {
+            return this.meteorFallTime;
+        }
+
+        public int getArrivedTime() {
+            return this.arrivedTime;
+        }
+    }
+
+    private static final int MAP_X_MAX = 301;
+    private static final int MAP_Y_MAX = 301;
+    private static final int[][] METEOR_AFFECT_AREA = { { 0, 1, 0, -1 }, { 1, 0, -1, 0 } };
+    private static final int[][] MOVE_VECTOR = { { 0, 1, 0, -1 }, { 1, 0, -1, 0 } };
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         int m = in.nextInt();
-        
+
         int[] x = new int[m];
         int[] y = new int[m];
         int[] t = new int[m];
-        for(int i = 0; i < m; i++) {
+        for (int i = 0; i < m; i++) {
             x[i] = in.nextInt();
             y[i] = in.nextInt();
             t[i] = in.nextInt();
         }
-        
+
         int answer = solve(m, x, y, t);
-        
+
         System.out.println(answer);
     }
 
     public static int solve(int m, int[] x, int[] y, int[] t) {
-        // TODO Auto-generated method stub
-        return 0;
+
+        int[][] map = forcastMapAfterMeteosShower(m, x, y, t);
+
+        Queue<Point> queue = new LinkedList<Point>();
+        Point startPoint = new Poj3669MeteorShowerKuronicle().new Point(0, 0, map[0][0], 0);
+        queue.add(startPoint);
+
+        while (queue.isEmpty() == false) {
+            Point point = queue.poll();
+
+            if (point.isSafePoint()) {
+                return point.getArrivedTime();
+            }
+
+            if (point.canLocate()) {
+                for (int i = 0; i < MOVE_VECTOR[0].length; i++) {
+                    int next_x = point.getX() + MOVE_VECTOR[0][i];
+                    int next_y = point.getY() + MOVE_VECTOR[1][i];
+                    if (isValidArea(next_x, next_y)) {
+                        Point nextPoint = new Poj3669MeteorShowerKuronicle().new Point(next_x, next_y, map[next_x][next_y], point.getArrivedTime()+1);
+                        queue.add(nextPoint);
+                    }
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    private static int[][] forcastMapAfterMeteosShower(int m, int[] x, int[] y, int[] t) {
+        int[][] map = new int[MAP_X_MAX][MAP_Y_MAX];
+        for (int i = 0; i < m; i++) {
+            map[x[i]][y[i]] = t[i];
+            for (int j = 0; j < METEOR_AFFECT_AREA[0].length; j++) {
+                int affect_x = x[i] + METEOR_AFFECT_AREA[0][j];
+                int affect_y = y[i] + METEOR_AFFECT_AREA[1][j];
+                if (isValidArea(affect_x, affect_y)) {
+                    map[affect_x][affect_y] = t[i];
+                }
+            }
+        }
+        return map;
+    }
+
+    private static boolean isValidArea(int i, int j) {
+        return 0 <= i && i < MAP_X_MAX && 0 <= j && j < MAP_Y_MAX;
     }
 }
