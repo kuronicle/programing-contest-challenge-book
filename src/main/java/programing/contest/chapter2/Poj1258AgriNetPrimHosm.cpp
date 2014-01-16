@@ -1,5 +1,5 @@
 /**
-   Agri-Net
+   Agri-Net Prim
    http://poj.org/problem?id=1258
 */
 #include <iostream>
