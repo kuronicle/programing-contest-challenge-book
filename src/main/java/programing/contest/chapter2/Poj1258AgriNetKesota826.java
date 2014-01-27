@@ -23,53 +23,10 @@ public class Poj1258AgriNetKesota826 {
 		Scanner sc = new Scanner(new File("src/in.txt"));
 		//		Scanner sc = new Scanner(System.in);
 
-		int N = sc.nextInt();
-
-		// 距離マップの初期化
-		int[][] map = new int[N][N];
-		for (int i=0; i<N; i++) {
-			for (int j=0; j<N; j++) {
-				map[i][j] = sc.nextInt();
-			}
+		while(sc.hasNextInt()) {
+			int ans = solve(sc);
+			System.out.println(ans);
 		}
-
-		int ans = 0;
-
-		int[] mincost = new int[N];
-		int[] xList = new int[N];
-
-		for (int i=0; i<N; i++) {
-			mincost[i] = INF;
-			xList[i] = -1;
-		}
-
-		mincost[0] = 0;
-		Queue<Vec> q = new PriorityQueue<Vec>(200, new OriginalComparator());
-		q.add(new Vec(0,0));
-
-		int v;
-		// プリム法
-		while (q.size() != 0) {
-			v = -1;
-
-			v = q.peek().a;
-
-			if (v == -1) {
-				break;
-			}
-			xList[v] = 1;
-			ans += mincost[v];
-
-			q.clear();
-			for (int i=0; i<N; i++) {
-				if (xList[i] == -1) {
-					mincost[i] = Math.min(mincost[i], map[v][i]);
-					q.add(new Vec(i,mincost[i]));
-				}
-			}
-
-		}
-		System.out.println(ans);
 	}
 
 		public static class Vec {
@@ -82,6 +39,53 @@ public class Poj1258AgriNetKesota826 {
 			}
 		}
 
+		static int solve(Scanner sc) {
+			int N = sc.nextInt();
+
+			// 距離マップの初期化
+			int[][] map = new int[N][N];
+			for (int i=0; i<N; i++) {
+				for (int j=0; j<N; j++) {
+					map[i][j] = sc.nextInt();
+				}
+			}
+
+			int ans = 0;
+
+			int[] mincost = new int[N];
+			int[] xList = new int[N];
+
+			for (int i=0; i<N; i++) {
+				mincost[i] = INF;
+				xList[i] = -1;
+			}
+
+			mincost[0] = 0;
+			Queue<Vec> q = new PriorityQueue<Vec>(200, new OriginalComparator());
+			q.add(new Vec(0,0));
+
+			int v;
+			// プリム法
+			while (q.size() != 0) {
+				v = -1;
+
+				v = q.peek().a;
+
+
+				xList[v] = 1;
+				ans += mincost[v];
+
+				q.clear();
+				for (int i=0; i<N; i++) {
+					if (xList[i] == -1) {
+						mincost[i] = Math.min(mincost[i], map[v][i]);
+						q.add(new Vec(i,mincost[i]));
+					}
+				}
+
+			}
+			return ans;
+		}
 
 		public static class OriginalComparator implements Comparator<Vec> {
 
